@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ожидание запуска базы данных
-until nc -z -v -w30 mysql 3306
+until nc -z -v -w30 postgres 5432
 do
   echo "Ожидание запуска базы данных..."
   sleep 5
@@ -18,4 +18,5 @@ chmod -R 775 /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/bootstrap/cache
 
-exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf &
+exec composer run dev

@@ -19,6 +19,12 @@ RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
+COPY --from=node:20 /usr/local/bin /usr/local/bin
+COPY --from=node:20 /usr/local/lib/node_modules /usr/local/lib/node_modules
+
+# Verify installation
+RUN node -v && npm -v
+
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install exif
 # Копирование исходного кода приложения
@@ -48,3 +54,4 @@ COPY ./docker/php/configs/* /usr/local/etc/php/conf.d/
 
 USER root
 
+EXPOSE 5173
